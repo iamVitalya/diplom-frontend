@@ -1,0 +1,128 @@
+@import "../../assets/styles/variables";
+
+.sushi-list-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  width: 24%;
+  min-height: 357px;
+  padding: 1.9rem 2.5rem;
+  margin-bottom: 1rem;
+  margin-right: .5rem;
+  margin-left: .5rem;
+  &__image {
+    width: 179px;
+    height: 179px;
+    display: block;
+    img { width: 100%; }
+  }
+  &__header {
+    padding-top: 2rem;
+  }
+  &__title {
+    font-weight: 800;
+    font-size: 1.9rem;
+    letter-spacing: 0.015rem;
+    color: #000000;
+    margin-bottom: 0;
+  }
+  &__description {
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 0.015rem;
+    color: #000000;
+  }
+  &__price {
+    padding-top: 1rem;
+    color: #000000;
+    letter-spacing: 0.015rem;
+    margin-bottom: 0;
+  }
+  &__cost {
+    display: block;
+    font-weight: 800;
+    font-size: 2.8rem;
+  }
+  &__amount {
+    font-weight: 300;
+    font-size: 1rem;
+  }
+  &__button {
+    position: relative;
+    margin-top: 1rem;
+    width: 100%;
+    padding: .9rem 0;
+    background-color: transparent;
+    border: 1px solid $default-color-element;
+    border-radius: 3rem;
+
+    color: $default-color-element;
+    font-size: 1.4rem;
+    font-weight: 600;
+    &:hover {
+      background-color: $default-color-element;
+      color: #fff;
+      .sushi-list-item__in-cart {
+        background-color: #fff;
+        color: $default-color-element;
+      }
+    }
+  }
+  &__in-cart {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1.5rem;
+    width: 2.3rem;
+    height: 2.3rem;
+    background-color: $default-color-element;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.3rem;
+  }
+}
+@media screen and (max-width: 1190px) {
+  .sushi-list-item {
+    width: 23.8%;
+    padding: 1.9rem 1.2rem;
+  }
+}
+@media screen and (max-width: 1020px) {
+  .sushi-list-item {
+    width: 31%;
+  }
+  .sushi-list-item__button {
+    max-width: 220px;
+  }
+}
+@media screen and (max-width: 740px) {
+  .sushi-list-item {
+    width: 50%;
+    margin: 0;
+    padding: 1.9rem 8%;
+  }
+}
+@media screen and (max-width: 610px) {
+  .sushi-list-item {
+    padding: 1.9rem 3%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .sushi-list-item {
+    width: 100%;
+    padding: 1.9rem 22%;
+  }
+}
+@media screen and (max-width: 410px) {
+  .sushi-list-item {
+    width: 100%;
+    padding: 1.9rem 1rem;
+  }
+}

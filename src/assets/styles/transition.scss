@@ -1,0 +1,18 @@
+.header-cart,
+.category-item,
+.sushi-list-item__button,
+.sorting-selector,
+.cart-list-item__button,
+.cart-list-item__button::after,
+.cart-list-item__button::before,
+.cart-list__button,
+.cart-list__button svg path,
+.cart-list-uncompleted__button,
+.sushi-list-item__in-cart,
+.hamburger-item,
+.app-content-top,
+.hamburger {
+  transition: background-color .3s ease-in-out,
+  color .3s ease-in-out, border .3s ease-in-out,
+  stroke .3s ease-in-out, opacity .3s ease-in-out
+}
