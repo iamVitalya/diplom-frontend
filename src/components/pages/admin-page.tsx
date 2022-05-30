@@ -379,6 +379,9 @@ const ProductComponent: React.FC = () => {
                     value={form.category}
             >
               <option value="rolls">Роллы</option>
+              <option value="sushi">Суши</option>
+              <option value="spice">Специи</option>
+              <option value="sets">Сеты</option>
               <option value="other">Остальное</option>
             </Select>
           </div>
