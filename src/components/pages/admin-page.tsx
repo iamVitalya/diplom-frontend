@@ -306,7 +306,7 @@ const ProductComponent: React.FC = () => {
   const editItemHandler = (id: string) => {
     const payload = productList.map(item => {
       // @ts-ignore
-      if(item.id !== id) {
+      if(item._id === id) {
         // @ts-ignore
         item.edit = !item.edit;
 
@@ -322,7 +322,7 @@ const ProductComponent: React.FC = () => {
   const changeItemHandler = (event: React.ChangeEvent<HTMLInputElement>, id: string | number) => {
     const payload = productList.map(item => {
       // @ts-ignore
-      if(item.id !== id) {
+      if(item._id === id) {
         // @ts-ignore
         item[event.target?.name] = event.target.value;
 
