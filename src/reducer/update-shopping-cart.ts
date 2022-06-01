@@ -29,6 +29,14 @@ const updateShoppingCart = (state: GetUpdateShoppingCartType, actions: any): Ret
       return updateOrderCart(state, actions.payload, 1) as ReturnUpdateShoppingCartType;
     case "SUSHI_REMOVE_FROM_CART":
       return updateOrderCart(state, actions.payload, -1) as ReturnUpdateShoppingCartType;
+    case "SUSHI_CLEAR_BASKET": {
+      // @ts-ignore
+      return {
+        cartList: [],
+        fullOrderPrice: 0,
+        fullOrderAmount: 0,
+      };
+    }
     case "ALL_SUSHI_REMOVE_FROM_CART":
       const { buyAmount }: any = state.shoppingCart.cartList.find(({ id }: any) => id === actions.payload);
       return updateOrderCart(state, actions.payload, -buyAmount) as ReturnUpdateShoppingCartType;

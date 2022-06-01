@@ -5,6 +5,7 @@ import {
   sushiAddedToCart,
   sushiRemoveFromCart,
   allSushiRemoveFromCart,
+  sushiClearBasket
 } from './actions';
 
 export {
@@ -14,4 +15,5 @@ export {
   sushiAddedToCart,
   sushiRemoveFromCart,
   allSushiRemoveFromCart,
+  sushiClearBasket
 }

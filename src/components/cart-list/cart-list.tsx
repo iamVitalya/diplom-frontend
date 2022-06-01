@@ -7,6 +7,8 @@ import { TypeOneItemInCart } from "../../types";
 import { connect } from "react-redux";
 
 import './cart-list.scss';
+import useModal from "../../hook/modal";
+import Modal from "../modal";
 
 type TypeCartListProps = {
   cartList: Array<TypeOneItemInCart>
@@ -17,7 +19,8 @@ type TypeCartListProps = {
 }
 
 const CompletedShoppingCartItems: React.FC<TypeCartListProps> = ({cartList, onIncrement, fullOrderPrice, onDecrement, onDelete}: TypeCartListProps) => {
-  const history = useHistory()
+  const history = useHistory();
+  const {isShowing, toggle} = useModal();
 
   const templateCartItem = cartList.map((cart: TypeOneItemInCart) => {
     return (
@@ -54,7 +57,13 @@ const CompletedShoppingCartItems: React.FC<TypeCartListProps> = ({cartList, onIn
             <span className="cart-list__price--subtitle">{fullOrderPrice} ₽</span>
           </h6>
 
-          <button className="cart-list__button cart-list__buy">Оплатить сейчас</button>
+          <button className="cart-list__button cart-list__buy" onClick={toggle}>Оплатить сейчас</button>
+
+          <Modal
+            isShowing={isShowing}
+            hide={toggle}
+            order={cartList}
+          />
         </div>
       </div>
     </React.Fragment>
@@ -72,7 +81,7 @@ const UncompletedShoppingCartItems: React.FC = () => {
         Для того, чтобы это сделать, перейдите на главную страницу.
       </p>
       <div className="cart-list-uncompleted__detailed">
-        <button className="button cart-list-uncompleted__button" onClick={() => history.goBack()}>
+        <button className="button cart-list-uncompleted__button" onClick={() => history.push('/')}>
           Вернуться назад
         </button>
       </div>

@@ -7,13 +7,13 @@ import useAuth from "../../hook/auth";
 import useRoutes from "../routes-app/routes";
 
 const App: React.FC = () => {
-  const {token, login, logout, userId, ready} = useAuth();
+  const {token, login, logout, userId, ready, userRoles} = useAuth();
   const isAuthenticated = !!token
   const routes = useRoutes(isAuthenticated)
 
   return (
     <AuthContext.Provider value={{
-      token, login, logout, userId, isAuthenticated, email: null
+      token, login, logout, userId, isAuthenticated, email: null, userRoles
     }}>
       <main className="app">
         <div className="container">

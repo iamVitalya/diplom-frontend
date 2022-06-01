@@ -47,9 +47,6 @@ const Header: React.FC<HeaderPropsType> = ({fullOrderPrice, fullOrderAmount}: He
           </div>
         </Link>
         <nav style={{ display: 'flex' }}>
-          <Link to='/cart-page' className="header-link" style={{ marginRight: '10px' }}>
-            <CartButton price={fullOrderPrice} amount={fullOrderAmount} />
-          </Link>
           { isAuthenticated ?
             (
               <span>
@@ -68,15 +65,20 @@ const Header: React.FC<HeaderPropsType> = ({fullOrderPrice, fullOrderAmount}: He
             )
             :
             (
-            <Link to='/auth-page' className={['header-link', hideLink('/auth-page')].join(' ')}>
-              <button className="button sushi-list-item__button" style={{
-                padding: '10px 20px',
-                margin: '0',
-                minHeight: '50px',
-              }}>
-                <span className="sushi-list-item__main">Войти</span>
-              </button>
-            </Link>
+              <>
+                <Link to='/cart-page' className="header-link" style={{ marginRight: '10px' }}>
+                  <CartButton price={fullOrderPrice} amount={fullOrderAmount} />
+                </Link>
+                <Link to='/auth-page' className={['header-link', hideLink('/auth-page')].join(' ')}>
+                  <button className="button sushi-list-item__button" style={{
+                    padding: '10px 20px',
+                    margin: '0',
+                    minHeight: '50px',
+                  }}>
+                    <span className="sushi-list-item__main">Войти</span>
+                  </button>
+                </Link>
+              </>
           )}
         </nav>
       </div>

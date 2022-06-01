@@ -18,15 +18,19 @@ const RegComponent: React.FC = () => {
     password: '',
     isAdmin: false
   });
-  const {token} = useContext(AuthContext);
-  const {loading, request, error, clearError} = useHttp();
+  const { token, userId } = useContext(AuthContext);
+  const { loading, request, error, clearError } = useHttp();
 
   const fetchUser = useCallback(async () => {
     try {
       const fetched = await request('/api/user', 'GET', null, {
         Authorization: `Bearer ${token}`
       })
-      setUserList(fetched)
+
+      // @ts-ignore
+      const users = fetched.filter(item => item._id !== userId);
+
+      setUserList(users)
     } catch (e) {
     }
   }, [token, request])
@@ -165,7 +169,6 @@ const RegComponent: React.FC = () => {
                 <thead>
                 <tr>
                   <th>#</th>
-                  <th>id</th>
                   <th>email</th>
                   <th>role</th>
                   <th>actions</th>
@@ -175,7 +178,6 @@ const RegComponent: React.FC = () => {
                 {userList.map((user: any, index) => (
                   <tr key={user._id}>
                     <td>{index + 1}</td>
-                    <td>{user._id}</td>
                     <td>{user.email}</td>
                     <td>{user.roles[0]}</td>
                     <td>
@@ -260,7 +262,7 @@ const ProductComponent: React.FC = () => {
       delete payload.edit;
 
       // @ts-ignore
-      const data = await request('/api/product/create', 'POST', payload, {
+      await request('/api/product/create', 'POST', payload, {
         Authorization: `Bearer ${token}`
       });
 
@@ -345,7 +347,6 @@ const ProductComponent: React.FC = () => {
     } catch (e) {
     }
   }
-
 
   return (
     <div className={styles.d_flex}>
@@ -592,13 +593,192 @@ const ProductComponent: React.FC = () => {
   )
 };
 
+const OrderComponent: React.FC = () => {
+  const [orderList, setOrderList] = useState([]);
+  const [orderUpdate, setOrderUpdate] = useState(false);
+  const { loading, request, error, clearError } = useHttp();
+  const { token, userId } = useContext(AuthContext);
+
+  const fetchOrder = useCallback(async () => {
+    try {
+      const fetched = await request('/api/order', 'GET', null, {
+        Authorization: `Bearer ${token}`
+      })
+
+      fetched[0].edit = false;
+
+      // @ts-ignore
+      const users = fetched.filter(item => item._id !== userId);
+
+      setOrderList(users)
+    } catch (e) {
+    }
+  }, [token, request])
+
+  useEffect(() => {
+    fetchOrder()
+  }, [fetchOrder, orderUpdate])
+
+  useEffect(() => {
+    const timeout = setTimeout(() => clearError(), 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [error])
+
+  const changeItemHandler = (event: React.ChangeEvent<HTMLInputElement>, id: string | number) => {
+    const payload = orderList.map(item => {
+      // @ts-ignore
+      if(item._id === id) {
+        // @ts-ignore
+        item[event.target?.name] = event.target.value;
+
+        return item;
+      }
+
+      return item;
+    });
+
+    setOrderList(payload);
+  }
+
+  const updateHandler = async (event: React.MouseEvent, id: string) => {
+    event.preventDefault();
+
+    try {
+      // @ts-ignore
+      const payload = orderList.find(item => item._id === id)//[...orderList];
+      // @ts-ignore
+      delete payload.edit;
+
+      // @ts-ignore
+      await request(`/api/order/${ id }/update`, 'PUT', payload, {
+        Authorization: `Bearer ${token}`
+      });
+
+      setOrderUpdate(prevState => !prevState);
+    } catch (e) {
+    }
+  }
+
+  const editItemHandler = (id: string) => {
+    const payload = orderList.map(item => {
+      // @ts-ignore
+      if(item._id === id) {
+        // @ts-ignore
+        item.edit = !item.edit;
+
+        return item;
+      }
+
+      return item;
+    });
+
+    setOrderList(payload)
+  }
+
+  const removeItemHandler = async (id: string) => {
+    try {
+      // @ts-ignore
+      await request(`/api/order/${id}/delete`, 'DELETE', null, {
+        Authorization: `Bearer ${token}`
+      });
+      setOrderUpdate(prevState => !prevState);
+    } catch (e) {
+    }
+  }
+
+  return (
+    <div>
+      {!orderList.length ?
+        (
+          <>
+            Список пуст
+          </>
+        )
+        :
+        (
+          <div className={styles.table}>
+            <table>
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>ФИО</th>
+                <th>Адрес</th>
+                <th>Телефон</th>
+                <th>Комментарий</th>
+                <th>actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              {orderList.map((order: any, index) => (
+                <tr key={order._id}>
+                  <td>{index + 1}</td>
+                  <td>{ [order.fullName.lastname, order.fullName.name, order.fullName?.patronymic || '' ].join(' ') }</td>
+                  <td>{ [order.address.city, order.address.street, order.address.home, order.address?.flat || '' ].join(', ') }</td>
+                  <td>{ order.phone }</td>
+                  <td>
+                    { !order.edit ? order.comment : (
+                      <input type="text" name="comment" value={order.comment} onChange={e => changeItemHandler(e, order._id)} style={{ maxWidth: '30px' }}/>
+                    )}
+                  </td>
+                  <td>
+                    { !order.edit
+                      ?
+                      (
+                        <button
+                          type="button"
+                          style={{marginRight: '5px'}}
+                          onClick={() => editItemHandler(order._id)}
+                        >
+                          Ред
+                        </button>
+                      )
+                      :
+                      (
+                        <button
+                          type="button"
+                          style={{marginRight: '5px'}}
+                          onClick={(e) => updateHandler(e, order._id)}
+                        >
+                          Обновить
+                        </button>
+                      )
+                    }
+
+                    <button
+                      type="button"
+                      onClick={() => removeItemHandler(order._id)}
+                    >
+                      Удалить
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+    </div>
+  )
+};
+
 const AdminPage: React.FC = () => {
-  // @ts-ignore
+  const { userRoles } = useContext(AuthContext);
+
   return (
     <>
-      <RegComponent/>
-      <hr style={{margin: '45px 0'}}/>
+      {/* @ts-ignore */}
+      { userRoles.find(user => user === 'admin') && (
+        <>
+          <RegComponent/>
+          <hr style={{margin: '45px 0'}}/>
+        </>
+      ) }
       <ProductComponent/>
+      <hr style={{margin: '45px 0'}}/>
+      <OrderComponent/>
     </>
   )
 };

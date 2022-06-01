@@ -47,6 +47,12 @@ export const sushiRemoveFromCart = (id: number) => {
   }
 };
 
+export const sushiClearBasket = () => {
+  return {
+    type: 'SUSHI_CLEAR_BASKET'
+  }
+};
+
 export const allSushiRemoveFromCart = (id: number) => {
   return {
     type: 'ALL_SUSHI_REMOVE_FROM_CART',
