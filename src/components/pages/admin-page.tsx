@@ -720,7 +720,7 @@ const OrderComponent: React.FC = () => {
                   <td>{ order.phone }</td>
                   <td>
                     { !order.edit ? order.comment : (
-                      <input type="text" name="comment" value={order.comment} onChange={e => changeItemHandler(e, order._id)} style={{ maxWidth: '30px' }}/>
+                      <input type="text" name="comment" value={order.comment} onChange={e => changeItemHandler(e, order._id)}/>
                     )}
                   </td>
                   <td>
