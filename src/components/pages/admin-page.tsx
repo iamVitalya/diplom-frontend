@@ -287,16 +287,13 @@ const ProductComponent: React.FC = () => {
     event.preventDefault();
 
     try {
-      const payload = [...productList];
-
-      payload.map(item => {
-        // @ts-ignore
-        delete item.edit
-        return item;
-      });
+      // @ts-ignore
+      const payload = productList.find(item => item._id === id);
+      // @ts-ignore
+      delete payload.edit
 
       // @ts-ignore
-      const data = await request(`/api/product/${ id }/update`, 'PUT', payload, {
+      await request(`/api/product/${ id }/update`, 'PUT', payload, {
         Authorization: `Bearer ${token}`
       });
 
@@ -708,6 +705,7 @@ const OrderComponent: React.FC = () => {
                 <th>Адрес</th>
                 <th>Телефон</th>
                 <th>Комментарий</th>
+                <th>Заказ</th>
                 <th>actions</th>
               </tr>
               </thead>
@@ -723,6 +721,8 @@ const OrderComponent: React.FC = () => {
                       <input type="text" name="comment" value={order.comment} onChange={e => changeItemHandler(e, order._id)}/>
                     )}
                   </td>
+                  {/* @ts-ignore */}
+                  <td>{ order.order.map(item => `${ item.name } (x${ item.buyAmount }) `) }</td>
                   <td>
                     { !order.edit
                       ?
